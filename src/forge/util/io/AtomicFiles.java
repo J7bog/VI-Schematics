@@ -45,6 +45,15 @@ public class AtomicFiles {
         }
     }
     
+    private static void prepare(File file) throws IOException {
+        if (!Files.deleteIfExists(file.toPath()))
+            Files.createDirectories(file.getParentFile().toPath());
+    }
+    
+    private static void move(File from, File into) throws IOException {
+        Files.move(from.toPath(), into.toPath(), ATOMIC_MOVE, REPLACE_EXISTING);
+    }
+    
     public static void read(File file, NoReturnCons<RandomAccessFile> consumer) throws IOException {
         read(
             file,
