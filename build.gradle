@@ -85,6 +85,14 @@ tasks.register('replaceJar', Copy){
     into "C:\\Users\\lomlo\\AppData\\Roaming\\Mindustry\\mods\\"
 }
 
+sourceSets {
+    main {
+        java {
+            exclude 'backend/**'
+        }
+    }
+}
+
 jar{
     dependsOn stopMindustry
     finalizedBy replaceJar, startMindustry
