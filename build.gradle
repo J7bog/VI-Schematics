@@ -99,6 +99,9 @@ jar{
 
     archiveFileName = "${project.name}.jar"
 
+    // backend only for github actions
+    exclude 'web7/backend'
+
     from{
         configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
     }
