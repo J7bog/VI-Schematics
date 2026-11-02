@@ -1,11 +1,11 @@
-displayName: Forge
-name: forge
+displayName: VI-Schematics
+name: vi-schematics
 author: J7
 
 subtitle: Hello World!
 description: Hi Wrl!
 
-main: forge.bootstrap.Main
+main: vischematics
 repo: zxcurated/Forge
 
 version: 0.1

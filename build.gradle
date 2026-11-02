@@ -82,7 +82,7 @@ tasks.register('startMindustry', Exec){
 
 tasks.register('replaceJar', Copy){
     from jar.archiveFile
-    into "C:\\Users\\lomlo\\AppData\\Roaming\\Mindustry\\mods\\"
+    into "C:/Users/lomlo/AppData/Roaming/Mindustry/mods/"
 }
 
 jar{
@@ -90,9 +90,6 @@ jar{
     finalizedBy replaceJar, startMindustry
 
     archiveFileName = "${project.name}.jar"
-
-    // backend only for github actions
-    exclude 'web7/backend'
 
     from{
         configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
