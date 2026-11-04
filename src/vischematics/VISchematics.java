@@ -1,6 +1,7 @@
 package vischematics;
 
 import arc.util.CommandHandler;
+import arc.util.Log;
 import mindustry.mod.Mod;
 
 public class VISchematics extends Mod {
