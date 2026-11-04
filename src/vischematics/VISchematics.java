@@ -1,17 +1,17 @@
 package vischematics;
 
-import arc.util.CommandHandler;
+import arc.Events;
 import arc.util.Log;
+import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.mod.Mod;
 
 public class VISchematics extends Mod {
     
-    @Override
-    public void init() {
-    
+    static {
+        Events.on(ClientLoadEvent.class, VISchematics::clientLoaded);
     }
     
-    public void registerClientCommands(CommandHandler handler) {
-    
+    private static void clientLoaded(ClientLoadEvent event) {
+       SQL.key(Log::info);
     }
 }

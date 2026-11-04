@@ -1,66 +1,91 @@
 package vischematics;
 
 import arc.Core;
-import arc.func.ConsT;
+import arc.func.Cons;
 import arc.util.Http;
 import arc.util.Http.*;
+import arc.util.Log;
 
 public class SQL {
-    private static final String projectId = "hiacmaksrirkpwnyaeqr";
     private static final String API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhpYWNtYWtzcmlya3B3bnlhZXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM2MTU2MzgsImV4cCI6MjEwOTE5MTYzOH0.jbyFUCm4gXny6w2yaqpmRTG3MXrZucqsJHyzkzmYa30";
-    
-    private static final String FUNCTIONS_URL = "https://" + projectId + ".supabase.co/rest/v1/rpc/";
+    private static final String FUNCTIONS_URL = "https://hiacmaksrirkpwnyaeqr.supabase.co/rest/v1/rpc/";
     
     // region functions
     
-    public static void addAccount(boolean setAdmin, String name, String key, ConsT<HttpResponse, Exception> success) {
-        invoke("add_account",
-            success,
-            '{' +
-                "\"_admin_key\":\"" + Core.settings.getString("vischematics.key") + "\"," +
-                "\"_set_admin\":\"" + setAdmin + "\"," +
-                "\"_name\":\"" + name + "\"," +
-                "\"_key\":\"" + key + "\"" +
-            '}'
-        );
+    public static void addAccount(boolean setAdmin, String name, String key, Cons<String> resultCons) {
+        key(adminKey -> {
+            invoke("add_account", resultCons,
+                '{' +
+                    "\"_admin_key\":\"" + adminKey + "\"," +
+                    "\"_set_admin\":" + setAdmin + ',' +
+                    "\"_name\":\"" + name + "\"," +
+                    "\"_key\":\"" + key + "\"" +
+                    '}'
+            );
+        });
     }
     
-    public static void deleteAccount(String key, ConsT<HttpResponse, Exception> success) {
-        invoke("add_account",
-            success,
-            '{' +
-                "\"_admin_key\":\"" + Core.settings.getString("vischematics.key") + "\"," +
-                "\"_key\":\"" + key + '\"' +
-            '}'
-        );
+    public static void deleteAccount(String key, Cons<String> resultCons) {
+        key(adminKey -> {
+            invoke("delete_account", resultCons,
+                '{' +
+                    "\"_admin_key\":\"" + adminKey + "\"," +
+                    "\"_key\":\"" + key + '\"' +
+                '}'
+            );
+        });
     }
     
-    public static void setStatus(boolean isAdmin, String key, ConsT<HttpResponse, Exception> success) {
-        invoke("add_account",
-            success,
-            '{' +
-                "\"_admin_key\":\"" + Core.settings.getString("vischematics.key") + "\"," +
-                "\"_is_admin\":\"" + isAdmin + "\"," +
-                "\"_key\":\"" + key + '\"' +
-            '}'
-        );
+    public static void setStatus(String status, String key, Cons<String> resultCons) {
+        key(adminKey -> {
+            invoke("set_status", resultCons,
+                '{' +
+                    "\"_admin_key\":\"" + adminKey + "\"," +
+                    "\"_status\":" + status + ',' +
+                    "\"_key\":\"" + key + '\"' +
+                '}'
+            );
+        });
     }
     
-    public static void generateKey(ConsT<HttpResponse, Exception> success) {
-        invoke("generate_key", success, "");
+    public static void generateKey(Cons<String> resultCons) {
+        invoke("generate_key", key -> {
+            Core.settings.put("vischematics.key", key);
+            resultCons.get(key);
+        }, "{" + /* empty json */ "}");
     }
     
     // endregion functions
     
-    private static void invoke(String function, ConsT<HttpResponse, Exception> success, String body) {
-        request(function, body).submit(success);
+    public static void key(Cons<String> keyCons) {
+        String key = Core.settings.getString("vischematics.key");
+        if (key == null) {
+            generateKey(keyCons);
+        } else {
+            keyCons.get(key);
+        }
     }
     
-    private static HttpRequest request(String function, String body) {
+    private static void invoke(String function, Cons<String> resultCons, String json) {
+        request(function, json).submit(
+            res -> {
+                String result = res.getResultAsString().replace("\"", "").trim();
+                // 2** codes
+                if (((int) (res.getStatus().code / 100)) == 2) {
+                    resultCons.get(result);
+                } else {
+                    Log.err("SQL Error (@): @", function, result);
+                    resultCons.get(null);
+                }
+            }
+        );
+    }
+    
+    private static HttpRequest request(String function, String json) {
         return Http.post(FUNCTIONS_URL + function)
             .header("apikey", API_KEY)
             .header("Authorization", "Bearer " + API_KEY)
             .header("Content-Type", "application/json")
-            .content(body);
+            .content(json);
     }
 }
