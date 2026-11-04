@@ -5,8 +5,8 @@ author: J7
 subtitle: Hello World!
 description: Hi Wrl!
 
-main: vischematics
-repo: zxcurated/Forge
+main: vischematics.VISchematics
+repo: J7bog/VI-Schematics
 
 version: 0.1
 minGameVersion: 154
