@@ -13,10 +13,10 @@ public class Supabase {
     // region functions
     
     public static void addAccount(boolean setAdmin, String name, String key, Cons<String> resultCons) {
-        key(adminKey -> {
+        key(callerKey -> {
             invoke("add_account", resultCons,
                 '{' +
-                    "\"_admin_key\":\"" + adminKey + "\"," +
+                    "\"_caller_key\":\"" + callerKey + "\"," +
                     "\"_set_admin\":" + setAdmin + ',' +
                     "\"_name\":\"" + name + "\"," +
                     "\"_key\":\"" + key + "\"" +
@@ -26,10 +26,10 @@ public class Supabase {
     }
     
     public static void deleteAccount(String key, Cons<String> resultCons) {
-        key(adminKey -> {
+        key(callerKey -> {
             invoke("delete_account", resultCons,
                 '{' +
-                    "\"_admin_key\":\"" + adminKey + "\"," +
+                    "\"_caller_key\":\"" + callerKey + "\"," +
                     "\"_key\":\"" + key + '\"' +
                 '}'
             );
@@ -37,10 +37,10 @@ public class Supabase {
     }
     
     public static void setStatus(String status, String key, Cons<String> resultCons) {
-        key(adminKey -> {
+        key(callerKey -> {
             invoke("set_status", resultCons,
                 '{' +
-                    "\"_admin_key\":\"" + adminKey + "\"," +
+                    "\"_caller_key\":\"" + callerKey + "\"," +
                     "\"_status\":" + status + ',' +
                     "\"_key\":\"" + key + '\"' +
                 '}'
