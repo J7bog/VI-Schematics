@@ -12,6 +12,6 @@ public class VISchematics extends Mod {
     }
     
     private static void clientLoaded(ClientLoadEvent event) {
-       SQL.key(Log::info);
+       Supabase.key(Log::info);
     }
 }

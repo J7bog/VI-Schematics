@@ -6,7 +6,7 @@ import arc.util.Http;
 import arc.util.Http.*;
 import arc.util.Log;
 
-public class SQL {
+public class Supabase {
     private static final String API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhpYWNtYWtzcmlya3B3bnlhZXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM2MTU2MzgsImV4cCI6MjEwOTE5MTYzOH0.jbyFUCm4gXny6w2yaqpmRTG3MXrZucqsJHyzkzmYa30";
     private static final String FUNCTIONS_URL = "https://hiacmaksrirkpwnyaeqr.supabase.co/rest/v1/rpc/";
     
