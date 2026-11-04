@@ -17,7 +17,7 @@ public class Supabase {
             invoke("add_account", resultCons,
                 '{' +
                     "\"_caller_key\":\"" + callerKey + "\"," +
-                    "\"_set_admin\":" + setAdmin + ',' +
+                    "\"_status\":" + setAdmin + ',' +
                     "\"_name\":\"" + name + "\"," +
                     "\"_key\":\"" + key + "\"" +
                     '}'
