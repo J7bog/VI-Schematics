@@ -1,7 +1,6 @@
 package vischematics;
 
 import arc.Events;
-import arc.util.Log;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.mod.Mod;
 
@@ -12,6 +11,6 @@ public class VISchematics extends Mod {
     }
     
     private static void clientLoaded(ClientLoadEvent event) {
-       Supabase.key(Log::info);
+    
     }
 }

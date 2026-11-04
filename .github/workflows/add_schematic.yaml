@@ -1,0 +1,31 @@
+name: Test Create Schematic File
+
+on:
+  workflow_dispatch: # Запуск вручную через кнопку в интерфейсе GitHub
+
+# Даем боту права на запись в репозиторий
+permissions:
+  contents: write
+
+jobs:
+  create-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run JS script
+        run: node test-write.js
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add schematics/test-file.msch
+          # Проверяем, есть ли что коммитить (на случай, если файл уже был)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Test: Add empty schematic file" && git push)

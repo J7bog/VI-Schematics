@@ -20,7 +20,7 @@ public class Supabase {
                     "\"_status\":" + setAdmin + ',' +
                     "\"_name\":\"" + name + "\"," +
                     "\"_key\":\"" + key + "\"" +
-                    '}'
+                '}'
             );
         });
     }
@@ -74,7 +74,7 @@ public class Supabase {
                 if (((int) (res.getStatus().code / 100)) == 2) {
                     resultCons.get(result);
                 } else {
-                    Log.err("SQL Error (@): @", function, result);
+                    Log.err("Supabase Error (@): @", function, result);
                     resultCons.get(null);
                 }
             }
